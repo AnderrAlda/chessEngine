@@ -14,6 +14,9 @@ typedef unsigned long long U64;
 #define BRD_SQ_NUM 120
 
 
+#define MAXGAMEMOVES 2048 //there is not a game with more than 100
+
+
 //pices as enumerated constants. w/white and b/blacka
 enum { EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, Bk };
 
@@ -45,6 +48,22 @@ enum {
 enum { FALSE, TRUE };
 
 
+//castling
+enum { WKCA = 1, WQCA = 2, BKCA = 4, BQCA =8 };
+
+
+//inf to undo a move
+typedef struct {
+	
+	int move;
+	int castlePerm;
+	int enPas;
+	int fiftyMove;
+	U64 posKey;
+
+} S_UNDO;
+
+
 //board structure
 typedef struct {
 
@@ -60,12 +79,16 @@ typedef struct {
 	int ply;
 	int hisPly;
 
+	int castlePerm;
+
 	U64 posKey;
 
 	int pceNum[13];
 	int bigPce[3]; //anything that is not a pawn
 	int majorPce[3]; //rocks and queensa
 	int minPce[3]; //bishops and knights
+	
+	S_UNDO history[MAXGAMEMOVES];
 
 }
 
